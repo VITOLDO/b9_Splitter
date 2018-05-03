@@ -8,11 +8,12 @@ contract Splitter {
 
 	struct SplitterAttendant {
     	address account;
-    	uint donated;
     	uint balance;
   	}
 
   	SplitterAttendant[] public attendants;
+
+  	event Transfer(address indexed _from, address indexed _to, uint256 _value);
 
 	function Splitter(address _aliceAdd, 
 					  address _bobAdd, 
@@ -20,9 +21,9 @@ contract Splitter {
 		public 	
 	{
 		owner = msg.sender;
-		attendants.push(SplitterAttendant(_aliceAdd, 0, 0));
-		attendants.push(SplitterAttendant(_bobAdd, 0, 0));
-		attendants.push(SplitterAttendant(_carolAdd, 0, 0));
+		attendants.push(SplitterAttendant(_aliceAdd, 0));
+		attendants.push(SplitterAttendant(_bobAdd, 0));
+		attendants.push(SplitterAttendant(_carolAdd, 0));
 	}
 
 	function donateFund() 
@@ -32,42 +33,25 @@ contract Splitter {
 	{
 		require(msg.value > 0);
 
-		funds += msg.value;
+		uint numberOfAttendants = attendants.length;
+		require(numberOfAttendants == 3); // To be removed when sender can chose whom to split donation
 
-		uint numberOfAttendats = attendants.length;
-		for(uint i = 0; i < numberOfAttendats; i++) {
-			findAttendant(msg.sender).donated += msg.value;
+		for(uint i = 0; i < numberOfAttendants; i++) {
+			SplitterAttendant memory iteratedAttendant = attendants[i];
+			if (msg.sender != iteratedAttendant.account) { // possible place to chose whom to donate instead of just not me
+				require(iteratedAttendant.account.send(msg.value / 2));
+			}
 		}
 		return true;
 	}
+
+
 
 	function readAttendantsCount()
 		public
 		constant
 		returns(uint count)
 	{
-		return attendants.length;
-	}
-
-	function readAttendantDonation(address attendant)
-		public
-		constant
-		returns(uint count)
-	{
-		return findAttendant(attendant).donated;
-	}
-
-	function findAttendant(address attendant)
-		internal
-		constant
-		returns(SplitterAttendant resultAttendant)
-	{
-		uint numberOfAttendats = attendants.length;
-		for(uint i = 0; i < numberOfAttendats; i++) {
-			SplitterAttendant memory iteratedAttendant = attendants[i];
-			if (attendant == iteratedAttendant.account) {
-				return iteratedAttendant;
-			}
-		}
+		return attendants.length; // maybe some other way to find this out
 	}
 }

@@ -35,19 +35,17 @@ contract('Splitter', function(accounts) {
   });
 
   it("should be possible to donate", function() {
-    return contract.donateFund({from: aliceAddress, value: 1})
+    return contract.donateFund({from: aliceAddress, value: web3.toWei(1, 'ether')})
     .then(function(txHash){
-      return contract.funds({from: owner})
-      .then(function(funds){
-        assert.strictEqual('1', funds.toString(10), "Donation was not processed.");
-      });
-      return contract.readAttendantDonation(aliceAddress, {from: owner})
-      .then(function(donation) {
-        assert.strictEqual('1', donation.toString(10), "Donation was not equal to previously donated value or was missing.");
+      return contract.attendants(1, {from: owner})
+      .then(function(attendant) {
+        assert.equal(bobAddress, attendant[0], "It's not bob's address");
+        assert.strictEqual('100.5', web3.fromWei(web3.eth.getBalance(attendant[0]).toString(10), 'ether'), 
+                           "Donation was not splitted from previous donation or missing.");
       });
     });
   });
 
-  
+
 
 });

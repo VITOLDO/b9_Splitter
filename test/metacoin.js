@@ -37,6 +37,15 @@ contract('Splitter', function(accounts) {
     });
   });
 
+  it("dealing with odd numbers", function() {
+    return contract.donateFund(bobAddress, carolAddress, {from: aliceAddress, value: 100000001})
+    .then(function(txHash){
+        return contract.balances(aliceAddress, {from: aliceAddress})
+        .then (function(toWithdraw){
+          assert.strictEqual(toWithdraw.toString(10), '1', "Releasing some coins");
+        });
+    });
+  });
 
 
 });

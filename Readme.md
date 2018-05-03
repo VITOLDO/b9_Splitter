@@ -5,17 +5,17 @@
 1. Create Splitter.sol
 2. Create First "dumb" test.
 3. Create First simple functions.
+4. Implement simple functions to work with exact 3 address.
+5. Create unit-tests for those function.
 
 ### Yet to be done
 
-4. Implement simple functions to work with exact 3 address.
-5. Create unit-tests for those function.
 6. Extend functionality to dynamicly add address.
-	6.1. Unit tests.
-7. Extend functionality to dynamicly chose whom to donate Funds. (depends on 6)
-	7.1. Unit tests.
-8. Create simple page to show 3 exact address.
-9. Create page which will dynamcly update due to changes (task 6 and 7).
+7. Unit tests.
+8. Extend functionality to dynamicly chose whom to donate Funds. (depends on 6)
+9. Unit tests.
+10. Create simple page to show 3 exact address.
+11. Create page which will dynamcly update due to changes (task 6 and 7).
 
 ### Usage
 

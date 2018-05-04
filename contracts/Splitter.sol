@@ -37,6 +37,7 @@ contract Splitter {
 		public
 	{
 		Transfer(this, msg.sender, balances[msg.sender]);
+		balances[msg.sender] = 0;
 		msg.sender.transfer(balances[msg.sender]);
 	}
 }
